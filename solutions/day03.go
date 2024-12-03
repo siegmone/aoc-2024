@@ -1,9 +1,11 @@
 package solutions
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"sort"
+	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -30,18 +32,91 @@ func Day03() {
 	fmt.Printf("\tPart 2: %d\n", sol_2)
 }
 
-func d03_part_1(data string) (int, error) {
-	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	sort.Slice(lines, func(i, j int) bool {
+func is_digit(b byte) bool {
+	if b >= 48 && b <= 57 {
 		return true
-	})
-	return 0, nil
+	}
+	return false
+}
+
+func eval_instruction(instruction string) (int, error) {
+	start := 0
+	current := 0
+	var args []int
+	for current < len(instruction) {
+		start = current
+		c := instruction[current]
+		current++
+		if is_digit(c) {
+			peek := instruction[current]
+			for is_digit(peek) {
+				current++
+				peek = instruction[current]
+			}
+			num, err := strconv.Atoi(instruction[start:current])
+			if err != nil {
+				fmt.Println("Error parsing the number")
+				return -1, err
+			}
+			args = append(args, num)
+		}
+	}
+
+	if len(args) != 2 {
+		return -1, errors.New("Something went wrong, mul(*,*) doesn't have 2 args")
+	}
+
+	result := args[0] * args[1]
+
+	return result, nil
+}
+
+func d03_part_1(data string) (int, error) {
+	ans := 0
+	rgx := regexp.MustCompile(`mul\((\d+,\d+)\)`)
+	instructions := rgx.FindAllString(data, -1)
+	for _, instr := range instructions {
+		mul, err := eval_instruction(instr)
+		if err != nil {
+			fmt.Println("Wrong evaluation")
+			return 0, err
+		}
+		ans += mul
+	}
+	return ans, nil
 }
 
 func d03_part_2(data string) (int, error) {
-	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	sort.Slice(lines, func(i, j int) bool {
-		return true
-	})
-	return 0, nil
+	ans := 0
+
+	var sb strings.Builder
+
+    right := strings.Clone(data)
+	for {
+        split := strings.SplitN(right, "don't()", 2)
+        sb.WriteString(split[0])
+        if len(split) == 1 {
+            break
+        }
+        right = split[1]
+        split = strings.SplitN(right, "do()", 2)
+        if len(split) == 1 {
+            break
+        }
+        right = split[1]
+	}
+
+	rgx := regexp.MustCompile(`mul\((\d+,\d+)\)`)
+	instructions := rgx.FindAllString(sb.String(), -1)
+
+	for _, instr := range instructions {
+		mul, err := eval_instruction(instr)
+		if err != nil {
+			fmt.Println("Wrong evaluation")
+			return 0, err
+		}
+		ans += mul
+	}
+
+	return ans, nil
 }
