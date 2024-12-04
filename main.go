@@ -70,7 +70,9 @@ func runDay(day int) {
 	input_file := fmt.Sprintf("inputs/day%02d.txt", day)
 	if _, err := os.Stat(input_file); errors.Is(err, os.ErrNotExist) {
 		url := fmt.Sprintf("https://adventofcode.com/2024/day/%d/input", day)
-		downloadInput(input_file, url)
+        if err := downloadInput(input_file, url); err != nil {
+            fmt.Println(err)
+        }
 	}
 
 	switch day {
@@ -130,7 +132,7 @@ func runDay(day int) {
 }
 
 func runAll() {
-	for i := 1; i <= 2; i++ {
+	for i := 1; i <= 25; i++ {
 		runDay(i)
 	}
 }
