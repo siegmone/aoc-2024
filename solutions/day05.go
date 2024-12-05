@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -78,8 +79,34 @@ func d05_part_1(data string) (int, error) {
 }
 
 func d05_part_2(data string) (int, error) {
-	// lines := strings.Split(strings.TrimSpace(string(data)), "\n\n")
+	lines := strings.Split(strings.TrimSpace(string(data)), "\n\n")
+
+	rules := strings.Split(lines[0], "\n")
+	updates := strings.Split(lines[1], "\n")
+
 	ans := 0
+	for _, u := range updates {
+		rule_check := true
+		pages := strings.Split(u, ",")
+		for i := len(pages) - 1; i > 0; i-- {
+			if check_rules(pages[i], pages[i-1], rules) < 0 {
+				rule_check = false
+			}
+		}
+
+		if !rule_check {
+			sort.Slice(pages, func(i, j int) bool {
+				if check_rules(pages[i], pages[j], rules) < 0 {
+                    return true
+				}
+				return false
+			})
+			middle, err := strconv.Atoi(pages[len(pages)/2])
+			if err == nil {
+				ans += middle
+			}
+		}
+	}
 
 	return ans, nil
 }
