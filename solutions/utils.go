@@ -28,6 +28,7 @@ func divmod(numerator, denominator int) (quotient, remainder int) {
 func print_reset()       { fmt.Print("\033[0m") }
 func print_clear()       { fmt.Print("\033[H\033[2J") }
 func print_hide_cursor() { fmt.Print("\033[?25l") }
+func print_show_cursor() { fmt.Print("\033[?25h") }
 
 func print_bold() { fmt.Print("\033[1m") }
 

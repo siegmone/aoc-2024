@@ -40,7 +40,11 @@ func Day06() {
 		return
 	}
 
-	fmt.Printf("Day 06 Solutions:\n")
+	ani_txt := ""
+	if animate {
+		ani_txt = " (with animations)"
+	}
+	fmt.Printf("Day 06 Solutions%s:\n", ani_txt)
 	sol_1, err := d06_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day06 part 1")
@@ -158,14 +162,18 @@ func print_grid(grid [][]string) {
 
 func animate_guard(g *Guard, grid [][]string, part int) {
 	grid[g.Y][g.X] = directions[g.Direction]
-	print_clear()
 	print_hide_cursor()
 	print_bold()
 	fmt.Printf("Part %d\n", part)
 	print_reset()
 	print_grid(grid)
 	grid[g.Y][g.X] = "."
-	time.Sleep(15 * time.Millisecond)
+	height := len(grid)
+	for range height + 3 {
+		fmt.Print("\033[A")
+	}
+	time.Sleep(10 * time.Millisecond)
+	print_show_cursor()
 }
 
 func d06_part_1(data string) (int, error) {
@@ -210,6 +218,10 @@ func d06_part_1(data string) (int, error) {
 		}
 	}
 
+	for range height + 3 {
+		fmt.Print("\033[B")
+	}
+
 	return ans, nil
 }
 
@@ -217,6 +229,8 @@ func d06_part_2(data string) (int, error) {
 	grid := mapfunc(strings.Split(strings.TrimSpace(string(data)), "\n"), func(s string) []string {
 		return strings.Split(s, "")
 	})
+
+	height := len(grid)
 
 	guard := Guard{X: 0, Y: 0, Direction: 0}
 	var start_pos Position
@@ -284,5 +298,10 @@ func d06_part_2(data string) (int, error) {
 			delete(wall_map, p)
 		}
 	}
+
+	for range height + 3 {
+		fmt.Print("\033[B")
+	}
+
 	return ans, nil
 }
