@@ -4,11 +4,20 @@ import (
 	"aoc/solutions"
 	"errors"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 )
+
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 func main() {
 	argv := os.Args
@@ -37,7 +46,10 @@ func downloadInput(filepath string, url string) error {
 		return fmt.Errorf("creating request: %w", err)
 	}
 
-	var sessionCookie = os.Getenv("AOC_SESSION_COOKIE")
+	sessionCookie, exists := os.LookupEnv("AOC_SESSION_COOKIE")
+	if !exists {
+		return fmt.Errorf("No session cookie provided. Could't download the input")
+	}
 	req.AddCookie(&http.Cookie{
 		Name:  "session",
 		Value: sessionCookie,
@@ -70,9 +82,9 @@ func runDay(day int) {
 	input_file := fmt.Sprintf("inputs/day%02d.txt", day)
 	if _, err := os.Stat(input_file); errors.Is(err, os.ErrNotExist) {
 		url := fmt.Sprintf("https://adventofcode.com/2024/day/%d/input", day)
-        if err := downloadInput(input_file, url); err != nil {
-            fmt.Println(err)
-        }
+		if err := downloadInput(input_file, url); err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	switch day {
