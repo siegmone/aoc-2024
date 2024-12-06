@@ -32,17 +32,6 @@ func Day05() {
 	fmt.Printf("\tPart 2: %d\n", sol_2)
 }
 
-func mapfunc[T, U any](data []T, f func(T) U) []U {
-
-	res := make([]U, 0, len(data))
-
-	for _, e := range data {
-		res = append(res, f(e))
-	}
-
-	return res
-}
-
 func check_rules(a string, b string, rules []string) int {
 	rule := fmt.Sprintf("%s|%s", a, b)
 	if slices.Contains(rules, rule) {

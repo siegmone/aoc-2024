@@ -33,12 +33,6 @@ func matrix_el(m []string, cols int, i int, j int) string {
 	return m[(i*cols)+j]
 }
 
-func divmod(numerator, denominator int) (quotient, remainder int) {
-	quotient = numerator / denominator
-	remainder = numerator % denominator
-	return
-}
-
 func search(grid []string, rows int, cols int, i int, j int, word string) int {
 	result := 0
 

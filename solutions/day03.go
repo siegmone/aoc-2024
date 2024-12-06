@@ -32,13 +32,6 @@ func Day03() {
 	fmt.Printf("\tPart 2: %d\n", sol_2)
 }
 
-func is_digit(b byte) bool {
-	if b >= 48 && b <= 57 {
-		return true
-	}
-	return false
-}
-
 func eval_instruction(instruction string) (int, error) {
 	start := 0
 	current := 0
