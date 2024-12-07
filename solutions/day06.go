@@ -33,7 +33,10 @@ var directions [4]string = [4]string{"^", ">", "v", "<"}
 var animate = true
 
 func Day06() {
-	const input_file = "inputs/day06.txt"
+	input_file := "inputs/day06.txt"
+	if animate {
+		input_file = "inputs/day06_ex.txt"
+	}
 	data, err := os.ReadFile(input_file)
 	if err != nil {
 		fmt.Println("Error reading input:", err)
