@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Day05() {
@@ -18,18 +19,21 @@ func Day05() {
 	}
 
 	fmt.Printf("Day 05 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d05_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day05 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d05_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day05 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func check_rules(a string, b string, rules []string) int {
@@ -86,7 +90,7 @@ func d05_part_2(data string) (int, error) {
 		if !rule_check {
 			sort.Slice(pages, func(i, j int) bool {
 				if check_rules(pages[i], pages[j], rules) < 0 {
-                    return true
+					return true
 				}
 				return false
 			})

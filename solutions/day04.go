@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 func Day04() {
@@ -15,18 +16,21 @@ func Day04() {
 	}
 
 	fmt.Printf("Day 04 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d04_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day04 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d04_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day04 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func matrix_el(m []string, cols int, i int, j int) string {
@@ -97,14 +101,14 @@ func search_mas(grid []string, rows int, cols int, i int, j int) bool {
 		curr_c += y[dir]
 	}
 
-    nw := matrix_el(grid, cols, i - 1, j - 1)
-    ne := matrix_el(grid, cols, i - 1, j + 1)
-    sw := matrix_el(grid, cols, i + 1, j - 1)
-    se := matrix_el(grid, cols, i + 1, j + 1)
+	nw := matrix_el(grid, cols, i-1, j-1)
+	ne := matrix_el(grid, cols, i-1, j+1)
+	sw := matrix_el(grid, cols, i+1, j-1)
+	se := matrix_el(grid, cols, i+1, j+1)
 
-    if nw == se || ne == sw {
-        return false
-    }
+	if nw == se || ne == sw {
+		return false
+	}
 
 	return true
 }

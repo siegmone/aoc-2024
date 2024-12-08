@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Day02() {
@@ -17,18 +18,21 @@ func Day02() {
 	}
 
 	fmt.Printf("Day 02 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d02_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day02 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d02_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day02 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func d02_part_1(data string) (int, error) {
@@ -43,9 +47,9 @@ func d02_part_1(data string) (int, error) {
 			}
 		}
 		safe := check_safety(levels)
-        if safe {
-            safe_count++
-        }
+		if safe {
+			safe_count++
+		}
 	}
 	return safe_count, nil
 }
@@ -62,18 +66,18 @@ func d02_part_2(data string) (int, error) {
 			}
 		}
 		safe := check_safety(levels)
-        if safe {
-            safe_count++
-        }
+		if safe {
+			safe_count++
+		}
 		if !safe {
 			for i := 0; i < len(levels); i++ {
 				var new_levels []int
 				new_levels = append(new_levels, levels[:i]...)
 				new_levels = append(new_levels, levels[i+1:]...)
-                if check_safety(new_levels) {
-                    safe_count++
-                    break
-                }
+				if check_safety(new_levels) {
+					safe_count++
+					break
+				}
 			}
 		}
 	}

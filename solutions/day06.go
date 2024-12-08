@@ -16,11 +16,6 @@ type Guard struct {
 	Direction int /* 0 ^ | 1 > | 2 v | 3 < */
 }
 
-type Position struct {
-	X int
-	Y int
-}
-
 type End int
 
 const (
@@ -47,19 +42,23 @@ func Day06() {
 	if animate {
 		ani_txt = " (with animations)"
 	}
+
 	fmt.Printf("Day 06 Solutions%s:\n", ani_txt)
+	var start = time.Now()
 	sol_1, err := d06_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day06 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d06_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day06 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func turn_right(g *Guard) {
@@ -121,7 +120,7 @@ func guard_move(g *Guard, grid [][]string) End {
 	return CLEAR
 }
 
-func print_grid(grid [][]string) {
+func print_guard_grid(grid [][]string) {
 	width := len(grid[0])
 	for range 2*width + 2 {
 		fmt.Print("*")
@@ -169,7 +168,7 @@ func animate_guard(g *Guard, grid [][]string, part int) {
 	print_bold()
 	fmt.Printf("Part %d\n", part)
 	print_reset()
-	print_grid(grid)
+	print_guard_grid(grid)
 	grid[g.Y][g.X] = "."
 	height := len(grid)
 	for range height + 3 {
@@ -236,7 +235,7 @@ func d06_part_2(data string) (int, error) {
 	height := len(grid)
 
 	guard := Guard{X: 0, Y: 0, Direction: 0}
-	var start_pos Position
+	var start_pos Vector2
 
 	for y, row := range grid {
 		for x, pos := range row {
@@ -247,7 +246,7 @@ func d06_part_2(data string) (int, error) {
 		}
 	}
 
-	var visited []Position
+	var visited []Vector2
 	guard.X = start_pos.X
 	guard.Y = start_pos.Y
 
@@ -256,7 +255,7 @@ func d06_part_2(data string) (int, error) {
 		if animate {
 			animate_guard(&guard, grid, 2)
 		}
-		pos := Position{guard.X, guard.Y}
+		pos := Vector2{guard.X, guard.Y}
 		if !slices.Contains(visited, pos) && pos != start_pos {
 			visited = append(visited, pos)
 		}
@@ -266,8 +265,8 @@ func d06_part_2(data string) (int, error) {
 	}
 
 	ans := 0
-	var wall_map map[Position]int
-	wall_map = make(map[Position]int)
+	var wall_map map[Vector2]int
+	wall_map = make(map[Vector2]int)
 
 	for _, v := range visited {
 		// reset the guard
@@ -281,7 +280,7 @@ func d06_part_2(data string) (int, error) {
 				animate_guard(&guard, grid, 2)
 			}
 			if what == WALL {
-				pos := Position{X: guard.X, Y: guard.Y}
+				pos := Vector2{X: guard.X, Y: guard.Y}
 				if _, ok := wall_map[pos]; ok {
 					wall_map[pos]++
 					if wall_map[pos] > 2 {

@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Day03() {
@@ -18,18 +19,21 @@ func Day03() {
 	}
 
 	fmt.Printf("Day 03 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d03_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day03 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d03_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day03 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func eval_instruction(instruction string) (int, error) {
@@ -84,19 +88,19 @@ func d03_part_2(data string) (int, error) {
 
 	var sb strings.Builder
 
-    right := strings.Clone(data)
+	right := strings.Clone(data)
 	for {
-        split := strings.SplitN(right, "don't()", 2)
-        sb.WriteString(split[0])
-        if len(split) == 1 {
-            break
-        }
-        right = split[1]
-        split = strings.SplitN(right, "do()", 2)
-        if len(split) == 1 {
-            break
-        }
-        right = split[1]
+		split := strings.SplitN(right, "don't()", 2)
+		sb.WriteString(split[0])
+		if len(split) == 1 {
+			break
+		}
+		right = split[1]
+		split = strings.SplitN(right, "do()", 2)
+		if len(split) == 1 {
+			break
+		}
+		right = split[1]
 	}
 
 	rgx := regexp.MustCompile(`mul\((\d+,\d+)\)`)

@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Day01() {
@@ -18,21 +19,24 @@ func Day01() {
 	}
 
 	fmt.Printf("Day 01 Solutions:\n")
-	sol_1, err := d1_part_1(string(data))
+	var start = time.Now()
+	sol_1, err := d01_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day01 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
-	sol_2, err := d1_part_2(string(data))
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
+	sol_2, err := d01_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day01 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
-func d1_part_1(data string) (int, error) {
+func d01_part_1(data string) (int, error) {
 	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
 	l1 := []int{}
 	l2 := []int{}
@@ -67,7 +71,7 @@ func d1_part_1(data string) (int, error) {
 	return sum, nil
 }
 
-func d1_part_2(data string) (int, error) {
+func d01_part_2(data string) (int, error) {
 	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
 	l1 := []int{}
 	var m map[int]int
@@ -95,10 +99,10 @@ func d1_part_2(data string) (int, error) {
 		}
 	}
 
-    sum := 0
-    for _, v := range l1 {
-        sum += v * m[v]
-    }
+	sum := 0
+	for _, v := range l1 {
+		sum += v * m[v]
+	}
 
 	return sum, nil
 }
