@@ -53,6 +53,13 @@ func d08_part_1(data string) (int, error) {
 		anti_nodes[i] = make([]int, width)
 	}
 
+	grid_cpy := make([][]string, height)
+	for i := range grid_cpy {
+		grid_cpy[i] = make([]string, width)
+	}
+	copy(grid_cpy, grid)
+	fmt.Println()
+
 	ans := 0
 	for _, antennas := range antenna_positions {
 		for _, a1 := range antennas {
@@ -67,17 +74,31 @@ func d08_part_1(data string) (int, error) {
 					if anti_nodes[an1.Y][an1.X] != 1 {
 						ans++
 						anti_nodes[an1.Y][an1.X] = 1
+						grid_cpy[an1.Y][an1.X] = "#"
 					}
 				}
 				if an2.X >= 0 && an2.X < width && an2.Y >= 0 && an2.Y < height {
 					if anti_nodes[an2.Y][an2.X] != 1 {
 						ans++
 						anti_nodes[an2.Y][an2.X] = 1
+						grid_cpy[an2.Y][an2.X] = "#"
 					}
 				}
+
+				print_hide_cursor()
+				print_grid(grid_cpy)
+				for range height {
+					fmt.Print("\033[A")
+				}
+				time.Sleep(10 * time.Millisecond)
+				print_show_cursor()
 			}
 		}
 	}
+	for range height {
+		fmt.Print("\033[B")
+	}
+	fmt.Println()
 
 	return ans, nil
 }
@@ -102,6 +123,13 @@ func d08_part_2(data string) (int, error) {
 		anti_nodes[i] = make([]int, width)
 	}
 
+	grid_cpy := make([][]string, height)
+	for i := range grid_cpy {
+		grid_cpy[i] = make([]string, width)
+	}
+	copy(grid_cpy, grid)
+	fmt.Println()
+
 	ans := 0
 	for _, antennas := range antenna_positions {
 		for _, a1 := range antennas {
@@ -115,12 +143,25 @@ func d08_part_2(data string) (int, error) {
 					if anti_nodes[current.Y][current.X] != 1 {
 						ans++
 						anti_nodes[current.Y][current.X] = 1
+						grid_cpy[current.Y][current.X] = "#"
 					}
 					current = current.add_vector(&step)
+
+					print_hide_cursor()
+					print_grid(grid_cpy)
+					for range height {
+						fmt.Print("\033[A")
+					}
+					time.Sleep(10 * time.Millisecond)
+					print_show_cursor()
 				}
 			}
 		}
 	}
+	for range height {
+		fmt.Print("\033[B")
+	}
+	fmt.Println()
 
 	return ans, nil
 }
