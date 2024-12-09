@@ -45,6 +45,10 @@ func divmod(numerator, denominator int) (quotient, remainder int) {
 	return
 }
 
+func remove[T any](slice []T, s int) []T {
+    return append(slice[:s], slice[s+1:]...)
+}
+
 func print_grid(grid [][]string) {
 	for _, row := range grid {
 		for _, char := range row {
