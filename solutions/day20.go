@@ -5,6 +5,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 )
 
 func Day20() {
@@ -16,18 +17,21 @@ func Day20() {
 	}
 
 	fmt.Printf("Day 20 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d20_part_1(string(data))
 	if err != nil {
-		fmt.Println("Error during Day19 part 1")
+		fmt.Println("Error during Day20 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d20_part_2(string(data))
 	if err != nil {
-		fmt.Println("Error during Day19 part 2")
+		fmt.Println("Error during Day20 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func d20_part_1(data string) (int, error) {

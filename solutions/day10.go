@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+    "time"
 )
 
 func Day10() {
@@ -17,18 +18,21 @@ func Day10() {
 	}
 
 	fmt.Printf("Day 10 Solutions:\n")
+	var start = time.Now()
 	sol_1, err := d10_part_1(string(data))
 	if err != nil {
 		fmt.Println("Error during Day10 part 1")
 		return
 	}
-	fmt.Printf("\tPart 1: %d\n", sol_1)
+	fmt.Printf("\tPart 1: %d (%s)\n", sol_1, time.Since(start))
+
+	start = time.Now()
 	sol_2, err := d10_part_2(string(data))
 	if err != nil {
 		fmt.Println("Error during Day10 part 2")
 		return
 	}
-	fmt.Printf("\tPart 2: %d\n", sol_2)
+	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
 func position_in_grid(grid [][]int, pos Vector2) bool {

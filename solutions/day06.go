@@ -25,7 +25,7 @@ const (
 )
 
 var directions [4]string = [4]string{"^", ">", "v", "<"}
-var animate = true
+var animate = false
 
 func Day06() {
 	input_file := "inputs/day06.txt"

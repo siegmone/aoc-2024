@@ -58,7 +58,7 @@ func d08_part_1(data string) (int, error) {
 		grid_cpy[i] = make([]string, width)
 	}
 	copy(grid_cpy, grid)
-	fmt.Println()
+	// fmt.Println()
 
 	ans := 0
 	for _, antennas := range antenna_positions {
@@ -85,20 +85,21 @@ func d08_part_1(data string) (int, error) {
 					}
 				}
 
-				print_hide_cursor()
-				print_grid(grid_cpy)
-				for range height {
-					fmt.Print("\033[A")
-				}
-				time.Sleep(10 * time.Millisecond)
-				print_show_cursor()
+                // Animation
+				// print_hide_cursor()
+				// print_grid(grid_cpy)
+				// for range height {
+				// 	fmt.Print("\033[A")
+				// }
+				// time.Sleep(10 * time.Millisecond)
+				// print_show_cursor()
 			}
 		}
 	}
-	for range height {
-		fmt.Print("\033[B")
-	}
-	fmt.Println()
+	// for range height {
+	// 	fmt.Print("\033[B")
+	// }
+	// fmt.Println()
 
 	return ans, nil
 }
@@ -128,7 +129,7 @@ func d08_part_2(data string) (int, error) {
 		grid_cpy[i] = make([]string, width)
 	}
 	copy(grid_cpy, grid)
-	fmt.Println()
+	// fmt.Println()
 
 	ans := 0
 	for _, antennas := range antenna_positions {
@@ -147,21 +148,22 @@ func d08_part_2(data string) (int, error) {
 					}
 					current = current.add_vector(&step)
 
-					print_hide_cursor()
-					print_grid(grid_cpy)
-					for range height {
-						fmt.Print("\033[A")
-					}
-					time.Sleep(10 * time.Millisecond)
-					print_show_cursor()
+                    // Animation
+					// print_hide_cursor()
+					// print_grid(grid_cpy)
+					// for range height {
+					// 	fmt.Print("\033[A")
+					// }
+					// time.Sleep(10 * time.Millisecond)
+					// print_show_cursor()
 				}
 			}
 		}
 	}
-	for range height {
-		fmt.Print("\033[B")
-	}
-	fmt.Println()
+	// for range height {
+	// 	fmt.Print("\033[B")
+	// }
+	// fmt.Println()
 
 	return ans, nil
 }
