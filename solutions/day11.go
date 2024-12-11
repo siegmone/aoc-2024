@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
-    "time"
+	"time"
 )
 
 func Day11() {
@@ -38,12 +38,9 @@ func blink(stone_map map[uint64]uint64) map[uint64]uint64 {
 	new_stone_map := make(map[uint64]uint64)
 
 	for stone, count := range stone_map {
-		var key uint64
-		key = 0
 		stone_str := strconv.FormatUint(stone, 10)
 		if stone == 0 {
-			key = 1
-			map_entry_or_default_add(new_stone_map, key, count)
+			map_entry_or_default_add(new_stone_map, 1, count)
 		} else if len(stone_str)%2 == 0 {
 			left := stone_str[:len(stone_str)/2]
 			right := stone_str[len(stone_str)/2:]
@@ -52,8 +49,7 @@ func blink(stone_map map[uint64]uint64) map[uint64]uint64 {
 			map_entry_or_default_add(new_stone_map, ls, count)
 			map_entry_or_default_add(new_stone_map, rs, count)
 		} else {
-			key = stone * 2024
-			map_entry_or_default_add(new_stone_map, key, count)
+			map_entry_or_default_add(new_stone_map, stone*2024, count)
 		}
 	}
 
