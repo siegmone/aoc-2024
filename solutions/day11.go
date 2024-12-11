@@ -3,7 +3,7 @@ package solutions
 import (
 	"fmt"
 	"os"
-	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -30,18 +30,76 @@ func Day11() {
 	fmt.Printf("\tPart 2: %d\n", sol_2)
 }
 
-func d11_part_1(data string) (int, error) {
-	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	sort.Slice(lines, func(i, j int) bool {
-		return true
-	})
-	return 0, nil
+func blink(stone_map map[uint64]uint64) map[uint64]uint64 {
+	new_stone_map := make(map[uint64]uint64)
+
+	for stone, count := range stone_map {
+		var key uint64
+		key = 0
+		stone_str := strconv.FormatUint(stone, 10)
+		if stone == 0 {
+			key = 1
+			map_entry_or_default_add(new_stone_map, key, count)
+		} else if len(stone_str)%2 == 0 {
+			left := stone_str[:len(stone_str)/2]
+			right := stone_str[len(stone_str)/2:]
+			ls, _ := strconv.ParseUint(left, 10, 0)
+			rs, _ := strconv.ParseUint(right, 10, 0)
+			map_entry_or_default_add(new_stone_map, ls, count)
+			map_entry_or_default_add(new_stone_map, rs, count)
+		} else {
+			key = stone * 2024
+			map_entry_or_default_add(new_stone_map, key, count)
+		}
+	}
+
+	return new_stone_map
 }
 
-func d11_part_2(data string) (int, error) {
-	lines := strings.Split(strings.TrimSpace(string(data)), "\n")
-	sort.Slice(lines, func(i, j int) bool {
-		return true
-	})
-	return 0, nil
+func run_blinks(stones []uint64, n int) uint64 {
+	stone_map := make(map[uint64]uint64)
+	for _, stone := range stones {
+		stone_map[stone] = 1
+	}
+
+	for range n {
+		stone_map = blink(stone_map)
+	}
+
+	var result uint64
+	result = 0
+	for _, v := range stone_map {
+		result += v
+	}
+	return result
+}
+
+func d11_part_1(data string) (uint64, error) {
+	stones := mapfunc(
+		strings.Split(
+			strings.TrimSpace(string(data)),
+			" "),
+		func(s string) uint64 {
+			v, _ := strconv.Atoi(s)
+			return uint64(v)
+		})
+
+	ans := run_blinks(stones, 25)
+
+	return ans, nil
+}
+
+func d11_part_2(data string) (uint64, error) {
+	stones := mapfunc(
+		strings.Split(
+			strings.TrimSpace(string(data)),
+			" "),
+		func(s string) uint64 {
+			v, _ := strconv.Atoi(s)
+			return uint64(v)
+		})
+
+	ans := run_blinks(stones, 75)
+
+	return ans, nil
 }

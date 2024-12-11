@@ -46,7 +46,7 @@ func divmod(numerator, denominator int) (quotient, remainder int) {
 }
 
 func remove[T any](slice []T, s int) []T {
-    return append(slice[:s], slice[s+1:]...)
+	return append(slice[:s], slice[s+1:]...)
 }
 
 func print_grid(grid [][]string) {
@@ -55,6 +55,19 @@ func print_grid(grid [][]string) {
 			fmt.Print(char, " ")
 		}
 		fmt.Println()
+	}
+}
+
+type addable interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | float32 | float64
+}
+
+func map_entry_or_default_add[K comparable, V addable](hmap map[K]V, key K, value V) {
+	if _, ok := hmap[key]; ok {
+		hmap[key] += value
+	} else {
+		hmap[key] = value
 	}
 }
 
