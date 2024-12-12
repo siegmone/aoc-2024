@@ -35,7 +35,7 @@ func Day10() {
 	fmt.Printf("\tPart 2: %d (%s)\n", sol_2, time.Since(start))
 }
 
-func position_in_grid(grid [][]int, pos Vector2) bool {
+func position_in_grid[T any](grid [][]T, pos Vector2) bool {
 	height := len(grid)
 	width := len(grid[0])
 	if pos.X >= 0 && pos.X < width && pos.Y >= 0 && pos.Y < height {

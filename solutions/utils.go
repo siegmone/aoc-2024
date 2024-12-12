@@ -24,6 +24,15 @@ func (p *Vector2) distance(other *Vector2) float64 {
 			math.Pow(float64(p.Y)-float64(other.Y), 2))
 }
 
+func (p *Vector2) adjacent(other *Vector2) bool {
+	x_dist := int(math.Abs(float64(other.X - p.X)))
+	y_dist := int(math.Abs(float64(other.Y - p.Y)))
+	if x_dist+y_dist == 1 {
+		return true
+	}
+	return false
+}
+
 func mapfunc[T, U any](data []T, f func(T) U) []U {
 	res := make([]U, 0, len(data))
 	for _, e := range data {
