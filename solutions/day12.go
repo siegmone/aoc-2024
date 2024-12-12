@@ -8,73 +8,6 @@ import (
 	"time"
 )
 
-type Direction int
-
-const (
-	UP Direction = iota
-	RIGHT
-	DOWN
-	LEFT
-)
-
-func print_direction(d Direction) {
-	switch d {
-	case RIGHT:
-		fmt.Println("RIGHT")
-	case LEFT:
-		fmt.Println("LEFT")
-	case UP:
-		fmt.Println("UP")
-	case DOWN:
-		fmt.Println("DOWN")
-	}
-}
-
-func turn(current Direction, where Direction) Direction {
-	var next Direction
-	switch where {
-	case RIGHT:
-		next = (current + 1) % 4
-	case LEFT:
-		if current == 0 {
-			next = 3
-		} else {
-			next = (current - 1) % 4
-		}
-	}
-	return next
-}
-
-func on_the_right(pos Vector2, dir Direction) Vector2 {
-	var result Vector2
-	switch dir {
-	case RIGHT:
-		result = pos.add_vector(&Vector2{0, 1})
-	case LEFT:
-		result = pos.add_vector(&Vector2{0, -1})
-	case UP:
-		result = pos.add_vector(&Vector2{1, 0})
-	case DOWN:
-		result = pos.add_vector(&Vector2{-1, 0})
-	}
-	return result
-}
-
-func move_vec(vec Vector2, dir Direction) Vector2 {
-	var next Vector2
-	switch dir {
-	case RIGHT:
-		next = vec.add_vector(&Vector2{1, 0})
-	case LEFT:
-		next = vec.add_vector(&Vector2{-1, 0})
-	case UP:
-		next = vec.add_vector(&Vector2{0, -1})
-	case DOWN:
-		next = vec.add_vector(&Vector2{0, 1})
-	}
-	return next
-}
-
 func Day12() {
 	const input_file = "inputs/day12.txt"
 	data, err := os.ReadFile(input_file)
@@ -139,6 +72,10 @@ func region_perimeter(region []Vector2) int {
 	y_dir := [4]int{0, -1, 1, 0}
 
 	perimeter := 0
+	region_map := make(map[Vector2]bool)
+	for _, cell := range region {
+		region_map[cell] = true
+	}
 
 	for _, cell := range region {
 		for i := range x_dir {
@@ -146,7 +83,7 @@ func region_perimeter(region []Vector2) int {
 				X: cell.X + x_dir[i],
 				Y: cell.Y + y_dir[i],
 			}
-			if !slices.Contains(region, neighbor) {
+			if _, ok := region_map[neighbor]; !ok {
 				perimeter++
 			}
 		}
