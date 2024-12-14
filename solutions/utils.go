@@ -10,27 +10,35 @@ type Vector2 struct {
 	Y int
 }
 
-func (p *Vector2) add_vector(other *Vector2) Vector2 {
-	return Vector2{p.X + other.X, p.Y + other.Y}
+func (v *Vector2) add_vector(other *Vector2) Vector2 {
+	return Vector2{v.X + other.X, v.Y + other.Y}
 }
 
-func (p *Vector2) sub_vector(other *Vector2) Vector2 {
-	return Vector2{p.X - other.X, p.Y - other.Y}
+func (v *Vector2) sub_vector(other *Vector2) Vector2 {
+	return Vector2{v.X - other.X, v.Y - other.Y}
 }
 
-func (p *Vector2) distance(other *Vector2) float64 {
+func (v *Vector2) distance(other *Vector2) float64 {
 	return math.Sqrt(
-		math.Pow(float64(p.X)-float64(other.X), 2) +
-			math.Pow(float64(p.Y)-float64(other.Y), 2))
+		math.Pow(float64(v.X)-float64(other.X), 2) +
+			math.Pow(float64(v.Y)-float64(other.Y), 2))
 }
 
-func (p *Vector2) adjacent(other *Vector2) bool {
-	x_dist := int(math.Abs(float64(other.X - p.X)))
-	y_dist := int(math.Abs(float64(other.Y - p.Y)))
+func (v *Vector2) adjacent(other *Vector2) bool {
+	x_dist := int(math.Abs(float64(other.X - v.X)))
+	y_dist := int(math.Abs(float64(other.Y - v.Y)))
 	if x_dist+y_dist == 1 {
 		return true
 	}
 	return false
+}
+
+func (v *Vector2) dot(other *Vector2) int {
+	return v.X*other.X + v.Y*other.Y
+}
+
+func (v *Vector2) scale(scalar int) Vector2 {
+	return Vector2{v.X * scalar, v.Y * scalar}
 }
 
 func mapfunc[T, U any](data []T, f func(T) U) []U {
@@ -67,12 +75,12 @@ func print_grid(grid [][]string) {
 	}
 }
 
-type addable interface {
+type number interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 |
 		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | float32 | float64
 }
 
-func map_entry_or_default_add[K comparable, V addable](hmap map[K]V, key K, value V) {
+func map_entry_or_default_add[K comparable, V number](hmap map[K]V, key K, value V) {
 	if _, ok := hmap[key]; ok {
 		hmap[key] += value
 	} else {
