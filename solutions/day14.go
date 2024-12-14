@@ -1,7 +1,6 @@
 package solutions
 
 import (
-	"bufio"
 	"fmt"
 	"math"
 	"os"
@@ -155,8 +154,6 @@ func d14_part_2(data string) (int, error) {
 		robots = append(robots, robot)
 	}
 
-	input := bufio.NewScanner(os.Stdin)
-
 	width := 101
 	height := 103
 
@@ -165,9 +162,10 @@ func d14_part_2(data string) (int, error) {
 		grid[i] = make([]string, width)
 	}
 
+	var ans int
 	var x_mean, y_mean, x_var, y_var, variance float64
 	print_hide_cursor()
-	for frame := 0; ; frame++ {
+	for frame := 1; ; frame++ {
 		for y, row := range grid {
 			for x := range row {
 				grid[y][x] = " "
@@ -187,35 +185,22 @@ func d14_part_2(data string) (int, error) {
 				panic("Something strange happened")
 			}
 			grid[robots[i].pos.Y][robots[i].pos.X] = "X"
-			x_mean += float64(robots[i].pos.X)
-			y_mean += float64(robots[i].pos.Y)
+			x_mean += float64(robots[i].pos.X) / float64(len(robots))
+			y_mean += float64(robots[i].pos.Y) / float64(len(robots))
 		}
-		x_mean = x_mean / float64(len(robots))
-		y_mean = x_mean / float64(len(robots))
 
 		for _, robot := range robots {
-			x_var += math.Pow(float64(robot.pos.X)-x_mean, 2)
-			y_var += math.Pow(float64(robot.pos.Y)-y_mean, 2)
+			x_var += math.Pow(float64(robot.pos.X)-x_mean, 2) / float64(len(robots))
+			y_var += math.Pow(float64(robot.pos.Y)-y_mean, 2) / float64(len(robots))
 		}
-		x_var = x_var / float64(len(robots))
-		y_var = x_var / float64(len(robots))
 
 		variance = (x_var + y_var) / 2
-
-		if variance < 200 {
-			print_clear()
-			fmt.Println("Frame:", frame)
-			fmt.Println("Mean X:", x_mean)
-			fmt.Println("Mean Y:", y_mean)
-			fmt.Println("Variance:", variance)
-			fmt.Println("Variance X:", x_var)
-			fmt.Println("Variance Y:", y_var)
-			print_grid(grid)
-			input.Scan()
+		if variance < 400 {
+			ans = frame
+			break
 		}
 
 	}
 
-	ans := 0
 	return ans, nil
 }
